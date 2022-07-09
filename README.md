@@ -87,3 +87,25 @@ Los siguientes valores de ZoneId pueden usarse en un Zone.Identifier ADS:
 Hoy en día, todo el software principal en la plataforma de Windows que se ocupa de archivos adjuntos o archivos descargados genera un ADS de Zone.Identifier, incluidos Internet Explorer, Edge, Outlook, Chrome, FireFox, etc. ¿Cómo escriben estos programas estos ADS? Ya sea creando el ADS directamente o mediante la implementación del sistema de la interfaz IAttachmentExecute . El comportamiento de este último se puede controlar a través de la propiedad SaveZoneInformation en el Administrador de archivos adjuntos .
 
 Tenga en cuenta que la implementación de Windows 10 de la interfaz IAttachmentExecute también agregará información de URL a Zone.Identifier ADS.
+
+Para los miembros del **_Red Team_**, probablemente sea bueno darse cuenta de que _MOTW_ también se configurará cuando se use la técnica de contrabando de HTML.
+
+### El papel de MOTW en las medidas de seguridad
+
+Windows, MS Office y varios otros programas utilizan la información del _flujo de datos alternativo_ (ADS) del _identificador de zona_ (Zone.Identifier) para activar funciones de seguridad en los archivos descargados. Los siguientes son 2 de los más notables desde la perspectiva de un jugador del _Red Team_ (pero hay más, esta lista está lejos de ser completa).
+
+#### Pantalla inteligente de Windows Defender
+
+Esta característica funciona comparando los archivos ejecutables descargados (basados en Zone Identifier ADS) con una lista blanca de archivos que son bien conocidos y descargados por muchos usuarios de Windows. Si el archivo no está en esa lista, Windows Defender SmartScreen muestra una advertencia.
+
+#### Vistas protegidas de MS Office
+
+El sandbox de Vista protegida intenta proteger a los usuarios de MS Office contra riesgos potenciales en archivos que se originan en Internet u otras zonas peligrosas. De forma predeterminada, la mayoría de los tipos de archivos de MS Office marcados con MOTW se abrirán en este entorno limitado. Muchos usuarios conocen esta función como la famosa barra amarilla de MS Office con el botón "Habilitar edición".
+
+MWR (ahora F-Secure labs) publicó un excelente artículo técnico sobre este sandbox hace algunos años. Tenga en cuenta que algunos tipos de archivos de MS Office no se pueden cargar en el entorno limitado de Vista protegida. SYLK es un ejemplo famoso de esto.
+
+### Archivos que no almacenan un ADS _Zone.Identifier_
+
+**Git**: Utilizarlo es una excelente estrategia si se desea evadir el _ADS Zone.Identifier_ ya que al clonar un repositorio este no generará el Zone.Identifier. Para los red teamers que apuntan a los desarrolladores, entregar sus Payloads a través de Git podría ser una buena opción para evadir MOTW.
+
+**7Zip**: Otro ejemplo famoso de software que no establece un _Zone.Identifier ADS_. Este cliente de archivado solo establece un indicador MOTW cuando se hace doble clic en un archivo desde la GUI, lo que significa que el archivo se extrae al directorio temporal y se abre desde allí. Sin embargo, tras la extracción manual de archivos a otras ubicaciones (es decir, hacer clic en el botón de extracción en lugar de hacer doble clic), 7Zip no propaga un ADS de Zone.Identifier para los archivos extraídos. Tenga en cuenta que esto funciona independientemente del formato del archivo de almacenamiento: cualquier extensión manejada por 7zip (7z, zip, rar, etc.) demostrará este comportamiento.
