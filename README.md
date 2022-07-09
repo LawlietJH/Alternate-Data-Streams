@@ -1,5 +1,5 @@
 # Alternate Data Streams
- Extrae los ADS (Alternate Data Streams) de cualquier archivo en windows
+ Extrae, Crea o Elimina los ADS (Alternate Data Streams) de cualquier archivo en windows.
 
 ## Qué es un Alternate Data Stream:
 
@@ -12,6 +12,12 @@ Los Flujos Alternativos de Datos, Alternate Data Streams o ADS son una caracter�
   * CMD: notepad "file.etc:stream_name"
     * Ejemplo: notepad "Alternate-Data-Streams-master.zip:Zone.Identifier"
   * PowerShell: Get-Content .\file.etc -Stream Zone.Identifier
+
+También deben saber que crear un archivo completo en un ADS de cualquier archivo, solo existirá en un Disco con formato NTFS.
+
+El archivo ADS creado para cualquier archivo, no aumentará el peso ni alterara el archivo original, estos flujos de datos alternativos
+coexisten con los archivos pero serán ajenos a ellos, esto nos permite almacenar archivos completos en ADS vinculados a cualquier archivo
+pero no podremos transportarlo a otro dispositivo que no sea NTFS, por lo tanto, hay una posibilidad de perdér los ADS al manipular los archivos.
 
 ## Ejemplos de Uso:
 
